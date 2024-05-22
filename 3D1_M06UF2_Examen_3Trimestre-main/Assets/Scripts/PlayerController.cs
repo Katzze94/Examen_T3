@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
 
     GameManager gameManager;
 
+    public Animator animator;
+
     void Awake()
     {
         //Asignamos la variables del SpriteRender con el componente que tiene este objeto
@@ -31,6 +33,9 @@ public class PlayerController : MonoBehaviour
         sensor = GameObject.Find("GroundSensor").GetComponent<GroundSensor>();
         //Buscamos el objeto del GameManager y SFXManager lo asignamos a las variables
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();        
+
+        animator = GetComponent<Animator>();
+       
     }
 
     // Update is called once per frame
@@ -43,16 +48,23 @@ public class PlayerController : MonoBehaviour
             if(horizontal < 0)
             {
                 transform.rotation = Quaternion.Euler(0, 180, 0);
+                animator.SetBool("IsRunning", true);
             }
             else if(horizontal > 0)
             {
                 transform.rotation = Quaternion.Euler(0, 0, 0);
+                animator.SetBool("IsRunning", true);
+            }
+            else
+            {
+                animator.SetBool("IsRunning", false);
             }
 
 
             if(Input.GetButtonDown("Jump") && sensor.isGrounded)
             {
                 rBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+                animator.SetBool("IsJumping", true);
             }
         }    
         
